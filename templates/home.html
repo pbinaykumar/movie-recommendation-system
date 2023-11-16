@@ -8,10 +8,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body style="text-align: center;">
-    <h1>Select a Movie</h1>
-    <form action="#" method="post">
+<!--    <h1>Select a Movie</h1>-->
+    <form action="#" method="post" class="styled-form">
         <select id="movie" name="movie" class="select2" >
             {% for item in all_movie %}
                 <option value="{{ item }}">{{ item }}</option>
@@ -22,13 +23,20 @@
         </div>
     </form>
     {% if selected_movie %}
-        <div>
+        <div class="selected-movie-title">
             <h1 >Selected Movie : {{ selected_movie }} </h1>
         </div>
-        <div>
-            <h2>Recommended Movies</h2>
+    <div class="recomended-movie-title">
+                <h2>Recommended Movies</h2>
+    </div>
+        <div class="recomended-list-maindiv">
             {% for item in recommended_movies %}
-                <h4>{{ item }}</h4>
+            <div >
+                <div class="recomended-list-subdiv">
+                <img src="{{ item['poster'] }}" />
+                <h4>{{ item['name'] }}</h4>
+            </div>
+            </div>
             {% endfor %}
         </div>
     {% endif %}

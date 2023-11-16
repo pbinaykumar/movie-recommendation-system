@@ -1,7 +1,7 @@
 import pickle
 
 from flask import Flask, request, app, jsonify, url_for, render_template
-import numpy as np
+import requests
 import pandas as pd
 
 app = Flask(__name__)
@@ -26,8 +26,18 @@ def recommend(movie):
   movie_index_list = sorted(list(enumerate(distances)),key=lambda x: x[1],reverse=True)[1:6]
   movie_list = []
   for item in movie_index_list:
-    movie_list.append(movies.iloc[item[0]].title)
+      movie_list.append({
+          "name": movies.iloc[item[0]].title,
+          "poster": get_poster(movies.iloc[item[0]].movie_id)
+      })
   return movie_list
+
+def get_poster(movie_id):
+    response = requests.get(
+        "https://api.themoviedb.org/3/movie/{}?api_key=1d4848b17b678e542fd9e959d96d3648".format(movie_id))
+    data = response.json()
+    backdrop_path = data["backdrop_path"]
+    return "https://image.tmdb.org/t/p/w500{}".format(backdrop_path)
 
 
 

@@ -11,15 +11,23 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body style="text-align: center;">
-<!--    <h1>Select a Movie</h1>-->
-    <form action="#" method="post" class="styled-form">
+    <h1 class="page-header">Select your favorite movie we will recomend some similar list for you.</h1>
+    <form method="post" class="styled-form">
         <select id="movie" name="movie" class="select2" >
             {% for item in all_movie %}
                 <option value="{{ item }}">{{ item }}</option>
             {% endfor %}
         </select>
         <div style="margin-top: 20px;">
-            <input type="submit" value="Submit">
+<!--            <input type="submit" value="Submit">-->
+            <button class="button-82-pushable" type="submit" role="button">
+              <span class="button-82-shadow"></span>
+              <span class="button-82-edge"></span>
+              <span class="button-82-front text">
+                Submit
+              </span>
+
+            </button>
         </div>
     </form>
     {% if selected_movie %}
@@ -31,12 +39,26 @@
     </div>
         <div class="recomended-list-maindiv">
             {% for item in recommended_movies %}
-            <div >
-                <div class="recomended-list-subdiv">
-                <img src="{{ item['poster'] }}" />
-                <h4>{{ item['name'] }}</h4>
-            </div>
-            </div>
+                <div class="recomended-list-item">
+                    <div class="card">
+                        <div class="image-container">
+                            <img src="{{ item['poster'] }}" alt="{{ item['name'] }} Poster" />
+                            <div class="gradient-overlay"></div>
+                        </div>
+                        <div class="card-content">
+                            <div class="genre-container">
+                                {% for genre in item['genres'] %}
+                                    <div class="genre-box">{{ genre }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="card-titel-content">
+                                <h4>{{ item['name'] }}</h4>
+                                <p class="subtitle">{{ item['tagline'] }}</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
         </div>
     {% endif %}

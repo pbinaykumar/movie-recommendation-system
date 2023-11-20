@@ -26,18 +26,29 @@ def recommend(movie):
   movie_index_list = sorted(list(enumerate(distances)),key=lambda x: x[1],reverse=True)[1:6]
   movie_list = []
   for item in movie_index_list:
-      movie_list.append({
-          "name": movies.iloc[item[0]].title,
-          "poster": get_poster(movies.iloc[item[0]].movie_id)
-      })
+      movie_details = get_movie_details(movies.iloc[item[0]].movie_id)
+      # movie_list.append({
+      #     "name": movies.iloc[item[0]].title,
+      #     "poster": get_poster(movies.iloc[item[0]].movie_id)
+      # })
+      movie_details['name'] = movies.iloc[item[0]].title
+      movie_list.append(movie_details)
   return movie_list
 
-def get_poster(movie_id):
+def get_movie_details(movie_id):
     response = requests.get(
         "https://api.themoviedb.org/3/movie/{}?api_key=1d4848b17b678e542fd9e959d96d3648".format(movie_id))
     data = response.json()
-    backdrop_path = data["backdrop_path"]
-    return "https://image.tmdb.org/t/p/w500{}".format(backdrop_path)
+    genres = []
+    for genre in data['genres']:
+        genres.append(genre['name'])
+    movie_data = {
+        'poster': "https://image.tmdb.org/t/p/w500{}".format(data["backdrop_path"]),
+        'genres':genres,
+        'overview': ' '.join(data['overview'].split()[:30]),
+        'tagline':data['tagline'],
+    }
+    return movie_data
 
 
 
